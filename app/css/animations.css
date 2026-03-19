@@ -1,0 +1,120 @@
+/* === Word Pulse (Word Spotlight) === */
+@keyframes wordPulse {
+  0%, 100% { text-shadow: 0 0 8px rgba(200, 169, 81, .2); }
+  50% { text-shadow: 0 0 24px rgba(200, 169, 81, .6), 0 0 48px rgba(200, 169, 81, .2); }
+}
+
+/* === Shake (Wrong Answer) === */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(4px); }
+}
+
+/* === Slide Up (Feedback) === */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Fade In === */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* === Pop (Correct) === */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* === Screen Transitions === */
+.screen-enter {
+  animation: screenSlideIn .3s cubic-bezier(.4, 0, .2, 1) forwards;
+}
+
+@keyframes screenSlideIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.screen-enter-back {
+  animation: screenSlideBack .3s cubic-bezier(.4, 0, .2, 1) forwards;
+}
+
+@keyframes screenSlideBack {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* === Celebration Confetti (lesson complete) === */
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-60px) rotate(180deg); opacity: 0; }
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: float 1.5s ease-out forwards;
+}
+
+/* === Progress fill glow === */
+.progress-fill {
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -2px;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.progress-fill.active::after { opacity: 1; }
+
+/* === Chip fly animation === */
+@keyframes chipPlace {
+  from { opacity: 0; transform: scale(.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.word-chip.placing {
+  animation: chipPlace .2s ease forwards;
+}
+
+/* === Score counter === */
+@keyframes countUp {
+  from { transform: scale(.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.score-animate {
+  animation: countUp .4s cubic-bezier(.4, 0, .2, 1) forwards;
+}
+
+/* === Match line draw === */
+@keyframes drawLine {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* === Stagger children (for option cards) === */
+.stagger-in > *:nth-child(1) { animation-delay: 0s; }
+.stagger-in > *:nth-child(2) { animation-delay: .05s; }
+.stagger-in > *:nth-child(3) { animation-delay: .1s; }
+.stagger-in > *:nth-child(4) { animation-delay: .15s; }
+.stagger-in > * {
+  animation: fadeIn .3s ease backwards;
+}
