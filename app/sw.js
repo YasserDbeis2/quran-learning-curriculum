@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yawm-v1';
+const CACHE_NAME = 'yawm-v2';
 const PRECACHE = [
   './',
   './index.html',
@@ -11,6 +11,7 @@ const PRECACHE = [
   './js/audio.js',
   './js/data/lessons.js',
   './js/data/units.js',
+  './js/data/lesson-intros.js',
   './js/screens/units.js',
   './js/screens/lessons.js',
   './js/screens/exercise.js',
