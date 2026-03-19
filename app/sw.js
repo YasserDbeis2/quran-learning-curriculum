@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yawm-v2';
+const CACHE_NAME = 'yawm-v3';
 const PRECACHE = [
   './',
   './index.html',

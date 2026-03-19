@@ -44,7 +44,7 @@ export const LESSON_INTROS = {
     ],
     context: {
       label: 'Did You Know?',
-      text: 'The Bismillah opens every surah in the Quran except one — Surah At-Tawbah. Muslims recite it before eating, traveling, and starting anything important. Today you'll learn the first two words of this powerful phrase.',
+      text: 'The Bismillah opens every surah in the Quran except one — Surah At-Tawbah. Muslims recite it before eating, traveling, and starting anything important. Today you\'ll learn the first two words of this powerful phrase.',
     },
   },
 
