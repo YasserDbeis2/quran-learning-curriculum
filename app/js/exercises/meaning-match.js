@@ -1,5 +1,6 @@
 export function renderMeaningMatch(container, data, onComplete) {
-  const { pairs } = data;
+  // Normalize pairs: support both ['ar','en'] and {ar:'...',en:'...'} formats
+  const pairs = data.pairs.map(p => Array.isArray(p) ? p : [p.ar, p.en]);
   const shuffledAr = [...pairs].sort(() => Math.random() - 0.5);
   const shuffledEn = [...pairs].sort(() => Math.random() - 0.5);
 

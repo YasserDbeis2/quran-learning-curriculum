@@ -35,7 +35,7 @@ export function renderLessons(container, unitId) {
     if (isCurrent) firstIncompleteFound = true;
 
     const item = document.createElement('div');
-    item.className = `lesson-item${!isUnlocked ? ' locked' : ''}`;
+    item.className = 'lesson-item';
 
     const numClass = isComplete ? 'done' : isCurrent ? 'current' : 'todo';
     const numContent = isComplete ? '&#10003;' : lesson.number;
@@ -46,16 +46,18 @@ export function renderLessons(container, unitId) {
         <div class="lesson-name">${lesson.name}</div>
         <span class="lesson-type ${lesson.type}">${lesson.typeLabel}</span>
       </div>
-      ${!isUnlocked ? '<span class="lesson-lock">&#128274;</span>' : ''}
     `;
 
-    if (isUnlocked) {
-      item.addEventListener('click', () => {
+    const hasExercises = lesson.exercises && lesson.exercises.length > 0;
+    item.addEventListener('click', () => {
+      if (hasExercises) {
         state.lessonId = lessonId;
         state.resetLesson();
         router.navigate('exercise', { lessonId, unitId });
-      });
-    }
+      } else {
+        showComingSoonModal(container, lesson.name);
+      }
+    });
 
     div.appendChild(item);
   });
@@ -66,4 +68,25 @@ export function renderLessons(container, unitId) {
   div.querySelector('#lessons-back').addEventListener('click', () => {
     router.goBack();
   });
+}
+
+function showComingSoonModal(container, lessonName) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-card">
+      <div style="font-size:32px; margin-bottom:12px;">🚧</div>
+      <div style="font-size:16px; font-weight:600; color:var(--text); margin-bottom:6px;">${lessonName}</div>
+      <div style="font-size:13px; color:var(--text-dim); line-height:1.5; margin-bottom:20px;">
+        This lesson is not available yet.<br>Exercises are being crafted.
+      </div>
+      <button class="continue-btn modal-dismiss" style="width:100%; padding:12px;">Got it</button>
+    </div>
+  `;
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay || e.target.classList.contains('modal-dismiss')) {
+      overlay.remove();
+    }
+  });
+  container.appendChild(overlay);
 }

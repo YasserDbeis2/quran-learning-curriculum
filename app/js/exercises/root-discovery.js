@@ -1,12 +1,13 @@
 export function renderRootDiscovery(container, data, onComplete) {
-  const { root, rootMeaning, knownWords, newWord, question, options, answer } = data;
+  const { rootMeaning, knownWords, newWord, question, options, answer } = data;
+  const root = data.root || data.rootLetters;
 
   container.innerHTML = `
     <div class="exercise-label">Root Discovery</div>
     <div class="root-display">
       <div class="root-label">Shared Root</div>
       <div class="root-letters">${root}</div>
-      <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">${rootMeaning}</div>
+      ${rootMeaning ? `<div style="font-size:12px; color:var(--text-dim); margin-top:4px;">${rootMeaning}</div>` : ''}
     </div>
     <div class="root-words">
       ${knownWords.map(w => `
