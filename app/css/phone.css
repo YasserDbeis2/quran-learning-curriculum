@@ -1,6 +1,19 @@
 /* === Reset & Page Background === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  /* Prevent overscroll bounce on iOS */
+  overscroll-behavior: none;
+  /* Use dynamic viewport height */
+  height: 100dvh;
+}
+
+/* Prevent pull-to-refresh and elastic scroll on mobile */
+body {
+  overscroll-behavior: none;
+  -webkit-touch-callout: none;
+}
+
 :root {
   --gold: #C8A951;
   --gold-dim: #9A7D3A;
@@ -375,3 +388,88 @@ body {
 
 /* === Arabic Text === */
 .ar { font-family: var(--font-ar); direction: rtl; }
+
+/* ============================================
+   MOBILE: Native full-screen experience
+   Strip the phone frame, go edge-to-edge
+   ============================================ */
+@media (max-width: 500px) {
+  body {
+    background: var(--navy);
+    display: block;
+    min-height: 100dvh;
+  }
+
+  .page-bg {
+    padding: 0;
+    min-height: 100dvh;
+  }
+
+  .phone-frame {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  /* Hide the fake notch — real phone has its own */
+  .phone-notch {
+    display: none;
+  }
+
+  /* Screen fills the viewport, respects safe areas */
+  .phone-screen {
+    padding-top: env(safe-area-inset-top, 20px);
+  }
+
+  /* Tab bar respects bottom safe area (home indicator) */
+  .tab-bar {
+    padding-bottom: max(env(safe-area-inset-bottom, 20px), 20px);
+    height: auto;
+    min-height: 64px;
+    border-radius: 0;
+  }
+
+  /* Sticky headers respect safe area */
+  .header {
+    padding-top: 12px;
+  }
+}
+
+/* Standalone PWA mode — extra native touches */
+@media (display-mode: standalone) {
+  body {
+    background: var(--navy);
+    display: block;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .page-bg {
+    padding: 0;
+    min-height: 100dvh;
+  }
+
+  .phone-frame {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .phone-notch {
+    display: none;
+  }
+
+  .phone-screen {
+    padding-top: env(safe-area-inset-top, 48px);
+  }
+
+  .tab-bar {
+    padding-bottom: max(env(safe-area-inset-bottom, 28px), 28px);
+    height: auto;
+    min-height: 64px;
+  }
+}
