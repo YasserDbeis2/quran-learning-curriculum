@@ -36,6 +36,6 @@ export function renderTransformPredict(container, data, onComplete) {
     }
     container.querySelectorAll('.option-card').forEach(b => b.classList.add('disabled'));
 
-    onComplete(correct);
+    onComplete(correct, correct ? null : `Answer: ${answer}`);
   });
 }

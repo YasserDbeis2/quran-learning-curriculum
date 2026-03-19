@@ -1,5 +1,8 @@
+import { parseRef, playWord, stopAudio } from '../audio.js';
+
 export function renderAyahAssembly(container, data, onComplete) {
-  const { translation, words, isAyahLevel } = data;
+  const { translation, words, isAyahLevel, ayahRef } = data;
+  const ref = ayahRef ? parseRef(ayahRef) : null;
   const correctOrder = [...words];
   const shuffled = [...words].sort(() => Math.random() - 0.5);
   const placed = [];
@@ -23,6 +26,15 @@ export function renderAyahAssembly(container, data, onComplete) {
     const chip = e.target.closest('.word-chip');
     if (!chip || chip.classList.contains('used') || done) return;
 
+    // Play word audio when tapping
+    if (ref) {
+      const wordText = chip.dataset.word;
+      const wordIdx = correctOrder.indexOf(wordText);
+      if (wordIdx >= 0) {
+        playWord(ref.surah, ref.ayah, wordIdx + 1);
+      }
+    }
+
     chip.classList.add('used');
     placed.push(chip.dataset.word);
 
@@ -45,17 +57,12 @@ export function renderAyahAssembly(container, data, onComplete) {
 
     if (placed.length === correctOrder.length) {
       done = true;
+      stopAudio();
       const correct = placed.every((w, i) => w === correctOrder[i]);
       az.classList.add(correct ? 'correct-zone' : 'incorrect-zone');
 
-      const fb = document.createElement('div');
-      fb.className = `feedback-banner ${correct ? 'correct' : 'incorrect'}`;
-      fb.innerHTML = correct
-        ? `<div class="feedback-title">Perfect order!</div>`
-        : `<div class="feedback-title">Not quite</div><div class="feedback-detail" style="font-family:var(--font-ar); direction:rtl; font-size:18px; margin-top:4px;">${correctOrder.join(' ')}</div>`;
-      container.appendChild(fb);
-
-      onComplete(correct);
+      const detail = correct ? null : correctOrder.join(' ');
+      onComplete(correct, detail);
     }
   });
 }

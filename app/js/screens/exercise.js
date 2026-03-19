@@ -10,6 +10,9 @@ import { renderAyahAssembly } from '../exercises/ayah-assembly.js';
 import { renderTransformPredict } from '../exercises/transform-predict.js';
 import { renderColdRead } from '../exercises/cold-read.js';
 import { renderListen } from '../exercises/listen.js';
+import { renderAyahScanner } from '../exercises/ayah-scanner.js';
+import { renderListenAndIdentify } from '../exercises/listen-and-identify.js';
+import { stopAudio } from '../audio.js';
 
 const RENDERERS = {
   'word-spotlight': renderWordSpotlight,
@@ -21,6 +24,8 @@ const RENDERERS = {
   'transform-predict': renderTransformPredict,
   'cold-read': renderColdRead,
   'listen': renderListen,
+  'ayah-scanner': renderAyahScanner,
+  'listen-and-identify': renderListenAndIdentify,
 };
 
 export function renderExercise(container, lessonId) {
@@ -30,7 +35,8 @@ export function renderExercise(container, lessonId) {
   const exercises = lesson.exercises;
   const idx = state.exerciseIndex;
 
-  // Clear previous content and scroll to top
+  // Stop any playing audio and clear previous content
+  stopAudio();
   container.innerHTML = '';
   container.scrollTop = 0;
 
@@ -77,22 +83,50 @@ export function renderExercise(container, lessonId) {
   // Render exercise
   const renderer = RENDERERS[ex.type];
   if (renderer) {
-    renderer(body, ex, (correct) => {
+    renderer(body, ex, (correct, detail) => {
       if (correct !== undefined) {
         state.score.total++;
         if (correct) state.score.correct++;
       }
-      // Auto-advance after delay
-      setTimeout(() => {
+
+      // For reflective exercises (cold-read, listen), auto-advance
+      if (correct === undefined) {
+        setTimeout(() => {
+          state.exerciseIndex++;
+          const target = document.getElementById('app');
+          target.innerHTML = '';
+          renderExercise(target, lessonId);
+        }, 400);
+        return;
+      }
+
+      // Duolingo-style bottom feedback panel with Continue button
+      showFeedbackPanel(div, correct, detail, () => {
         state.exerciseIndex++;
         const target = document.getElementById('app');
         target.innerHTML = '';
         renderExercise(target, lessonId);
-      }, correct === undefined ? 400 : 1200);
+      });
     });
   } else {
     body.innerHTML = `<p>Unknown exercise type: ${ex.type}</p>`;
   }
+}
+
+function showFeedbackPanel(exerciseScreen, correct, detail, onContinue) {
+  const panel = document.createElement('div');
+  panel.className = `feedback-panel ${correct ? 'correct' : 'incorrect'}`;
+  panel.innerHTML = `
+    <div class="feedback-panel-header">
+      <div class="feedback-panel-icon">${correct ? '✓' : '✗'}</div>
+      <div class="feedback-panel-title">${correct ? 'Correct!' : 'Incorrect'}</div>
+    </div>
+    ${detail ? `<div class="feedback-panel-detail">${detail}</div>` : ''}
+    <button class="continue-btn" id="feedback-continue">Continue</button>
+  `;
+  exerciseScreen.appendChild(panel);
+
+  panel.querySelector('#feedback-continue').addEventListener('click', onContinue);
 }
 
 function renderLessonComplete(container, lesson) {

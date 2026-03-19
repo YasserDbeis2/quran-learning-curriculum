@@ -1,5 +1,8 @@
+import { parseRef, playWord, playAyah, stopAudio } from '../audio.js';
+
 export function renderColdRead(container, data, onComplete) {
   const { ayah, ayahRef, words } = data;
+  const ref = parseRef(ayahRef);
   const knownCount = words.filter(w => w.en !== null).length;
   const totalCount = words.length;
   let tappedCount = 0;
@@ -12,7 +15,7 @@ export function renderColdRead(container, data, onComplete) {
     <div class="ayah-display" id="cr-ayah" style="position:relative;">
       ${words.map((w, i) => {
         const cls = w.en ? 'known' : 'unknown';
-        return `<span class="ayah-word ${cls}" data-idx="${i}" style="position:relative;">${w.ar}</span>`;
+        return `<span class="ayah-word ${cls}${ref ? ' has-audio' : ''}" data-idx="${i}" style="position:relative;">${w.ar}</span>`;
       }).join(' ')}
     </div>
     <div id="cr-score" style="display:none;"></div>
@@ -23,16 +26,31 @@ export function renderColdRead(container, data, onComplete) {
   const scoreEl = container.querySelector('#cr-score');
   const revealBtn = container.querySelector('#cr-reveal');
 
-  // Tap known words to see meaning
+  // Auto-play the full ayah
+  if (ref) {
+    setTimeout(() => {
+      playAyah(ref.surah, ref.ayah, words.length);
+    }, 400);
+  }
+
+  // Tap known words to see meaning (and hear audio)
   ayahEl.addEventListener('click', (e) => {
-    const word = e.target.closest('.ayah-word.known');
-    if (!word || word.classList.contains('tapped') || revealed) return;
+    const word = e.target.closest('.ayah-word');
+    if (!word || revealed) return;
+
+    const idx = parseInt(word.dataset.idx);
+
+    // Play audio for any tapped word
+    if (ref) {
+      playWord(ref.surah, ref.ayah, idx + 1);
+    }
+
+    // Only show tooltip for known words
+    if (!word.classList.contains('known') || word.classList.contains('tapped')) return;
 
     word.classList.add('tapped');
     tappedCount++;
 
-    // Show tooltip
-    const idx = parseInt(word.dataset.idx);
     const meaning = words[idx].en;
 
     // Remove any existing tooltip
@@ -44,15 +62,14 @@ export function renderColdRead(container, data, onComplete) {
     tooltip.textContent = meaning;
     word.appendChild(tooltip);
 
-    // Auto-remove tooltip after 2s
     setTimeout(() => tooltip.remove(), 2000);
   });
 
   revealBtn.addEventListener('click', () => {
     if (revealed) return;
     revealed = true;
+    stopAudio();
 
-    // Show score
     const pct = Math.round((knownCount / totalCount) * 100);
     scoreEl.style.display = 'block';
     scoreEl.innerHTML = `
@@ -62,20 +79,18 @@ export function renderColdRead(container, data, onComplete) {
       </div>
     `;
 
-    // Highlight all unknown words
     container.querySelectorAll('.ayah-word.unknown').forEach(w => {
       w.style.opacity = '1';
       w.style.color = 'var(--text-dim)';
     });
 
-    // Show all known word meanings
     container.querySelectorAll('.ayah-word.known').forEach(w => {
       w.classList.add('tapped');
     });
 
     revealBtn.textContent = 'Continue';
     revealBtn.addEventListener('click', () => {
-      onComplete(undefined); // Cold read doesn't have right/wrong
+      onComplete(undefined);
     }, { once: true });
   });
 }

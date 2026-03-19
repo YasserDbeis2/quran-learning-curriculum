@@ -59,11 +59,7 @@ export function renderMeaningMatch(container, data, onComplete) {
         matched.add(arKey);
 
         if (matchedCount === pairs.length) {
-          const fb = document.createElement('div');
-          fb.className = 'feedback-banner correct';
-          fb.innerHTML = `<div class="feedback-title">All matched!</div>`;
-          container.appendChild(fb);
-          onComplete(true);
+          onComplete(true, null);
         }
       } else {
         // Wrong match

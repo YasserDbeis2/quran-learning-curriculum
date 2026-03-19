@@ -43,14 +43,6 @@ export function renderRootDiscovery(container, data, onComplete) {
     }
     container.querySelectorAll('.option-card').forEach(b => b.classList.add('disabled'));
 
-    const fb = document.createElement('div');
-    fb.className = `feedback-banner ${correct ? 'correct' : 'incorrect'}`;
-    fb.innerHTML = `
-      <div class="feedback-title">${correct ? 'Correct!' : 'Not quite'}</div>
-      <div class="feedback-detail">${newWord.ar} = ${newWord.en} — from root ${root}</div>
-    `;
-    container.appendChild(fb);
-
-    onComplete(correct);
+    onComplete(correct, `${newWord.ar} = ${newWord.en} — from root ${root}`);
   });
 }

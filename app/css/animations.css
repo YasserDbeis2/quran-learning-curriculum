@@ -19,6 +19,12 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* === Panel Slide Up (Duolingo bottom panel) === */
+@keyframes panelSlideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* === Fade In === */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -72,13 +78,13 @@
 .progress-fill::after {
   content: '';
   position: absolute;
-  right: 0;
-  top: -2px;
-  width: 10px;
-  height: 10px;
-  background: var(--gold);
+  right: -1px;
+  top: -1px;
+  width: 14px;
+  height: 14px;
+  background: var(--green);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--gold);
+  box-shadow: 0 0 6px var(--green);
   opacity: 0;
   transition: opacity .3s;
 }

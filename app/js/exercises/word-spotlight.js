@@ -1,5 +1,8 @@
+import { parseRef, playWord, stopAudio } from '../audio.js';
+
 export function renderWordSpotlight(container, data, onComplete) {
-  const { words, highlightIndex, question, options, answer, detail, ayahRef } = data;
+  const { words, highlightIndex, question, options, answer, detail, ayahRef, hint } = data;
+  const ref = parseRef(ayahRef);
 
   container.innerHTML = `
     <div class="exercise-label">Word Spotlight</div>
@@ -8,9 +11,10 @@ export function renderWordSpotlight(container, data, onComplete) {
     </div>
     <div class="ayah-display">
       ${words.map((w, i) =>
-        `<span class="ayah-word${i === highlightIndex ? ' highlighted' : ''}">${w}</span>`
+        `<span class="ayah-word${i === highlightIndex ? ' highlighted' : ''}${ref ? ' has-audio' : ''}" data-word-idx="${i}">${w}</span>`
       ).join(' ')}
     </div>
+    ${hint ? `<div class="spotlight-hint">${hint}</div>` : ''}
     <div class="exercise-question">${question}</div>
     <div class="options-grid stagger-in">
       ${options.map(opt =>
@@ -18,6 +22,20 @@ export function renderWordSpotlight(container, data, onComplete) {
       ).join('')}
     </div>
   `;
+
+  // Tap any word to hear it
+  if (ref) {
+    container.querySelectorAll('.ayah-word').forEach(el => {
+      el.addEventListener('click', () => {
+        const idx = parseInt(el.dataset.wordIdx, 10);
+        playWord(ref.surah, ref.ayah, idx + 1);
+      });
+    });
+    // Auto-play the highlighted word after a short delay
+    setTimeout(() => {
+      playWord(ref.surah, ref.ayah, highlightIndex + 1);
+    }, 400);
+  }
 
   let answered = false;
   container.addEventListener('click', (e) => {
@@ -34,17 +52,7 @@ export function renderWordSpotlight(container, data, onComplete) {
     }
     container.querySelectorAll('.option-card').forEach(b => b.classList.add('disabled'));
 
-    // Feedback
-    if (detail) {
-      const fb = document.createElement('div');
-      fb.className = `feedback-banner ${correct ? 'correct' : 'incorrect'}`;
-      fb.innerHTML = `
-        <div class="feedback-title">${correct ? 'Correct!' : 'Not quite'}</div>
-        <div class="feedback-detail">${detail}</div>
-      `;
-      container.appendChild(fb);
-    }
-
-    onComplete(correct);
+    stopAudio();
+    onComplete(correct, detail || null);
   });
 }
