@@ -38,7 +38,7 @@ const state = {
   },
 
   resetLesson() {
-    this.exerciseIndex = 0;
+    this.exerciseIndex = -2;  // -2 = intro page, -1 = context page, 0+ = exercises
     this.score = { correct: 0, total: 0 };
   },
 

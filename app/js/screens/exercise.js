@@ -1,4 +1,5 @@
 import { LESSONS } from '../data/lessons.js';
+import { getIntro, formatAyahRef } from '../data/lesson-intros.js';
 import state from '../state.js';
 import router from '../router.js';
 import { renderWordSpotlight } from '../exercises/word-spotlight.js';
@@ -12,7 +13,7 @@ import { renderColdRead } from '../exercises/cold-read.js';
 import { renderListen } from '../exercises/listen.js';
 import { renderAyahScanner } from '../exercises/ayah-scanner.js';
 import { renderListenAndIdentify } from '../exercises/listen-and-identify.js';
-import { stopAudio } from '../audio.js';
+import { stopAudio, playAyahs, parseRef } from '../audio.js';
 
 const RENDERERS = {
   'word-spotlight': renderWordSpotlight,
@@ -43,6 +44,18 @@ export function renderExercise(container, lessonId) {
   // Empty lesson — content not yet built
   if (!exercises || exercises.length === 0) {
     renderComingSoon(container, lesson);
+    return;
+  }
+
+  // Intro page (idx === -2)
+  if (idx === -2) {
+    renderIntroPage(container, lesson, lessonId);
+    return;
+  }
+
+  // Context page (idx === -1)
+  if (idx === -1) {
+    renderContextPage(container, lesson, lessonId);
     return;
   }
 
@@ -113,6 +126,122 @@ export function renderExercise(container, lessonId) {
   }
 }
 
+// ── Intro Page ──────────────────────────────────────────────
+
+function renderIntroPage(container, lesson, lessonId) {
+  const { ayahs } = getIntro(lesson);
+  const advance = () => {
+    state.exerciseIndex = -1;
+    const target = document.getElementById('app');
+    target.innerHTML = '';
+    renderExercise(target, lessonId);
+  };
+
+  const div = document.createElement('div');
+  div.className = 'intro-page';
+
+  const hasPlayableAyahs = ayahs.some(a => !a.noAudio && parseRef(a.ref));
+
+  div.innerHTML = `
+    <button class="intro-close" id="intro-close">&times;</button>
+    <div class="intro-type-badge">${lesson.typeLabel}</div>
+    <div class="intro-lesson-name">${lesson.name}</div>
+    ${ayahs.length ? `
+      <div class="intro-ayahs">
+        ${ayahs.map(a => `
+          <div class="intro-ayah-card">
+            <div class="intro-ayah-arabic">${a.arabic}</div>
+            ${a.translation ? `<div class="intro-ayah-translation">${a.translation}</div>` : ''}
+            ${/^\d+:\d+$/.test(a.ref) ? `<div class="intro-ayah-ref">${formatAyahRef(a.ref)}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>
+      ${hasPlayableAyahs ? `
+        <button class="intro-play-btn" id="intro-play">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="intro-play-label">Listen to the verse</div>
+      ` : ''}
+    ` : ''}
+    <button class="continue-btn" id="intro-continue">Continue</button>
+  `;
+
+  container.appendChild(div);
+
+  div.querySelector('#intro-close').addEventListener('click', () => {
+    router.navigate('lessons', { unitId: state.unitId }, true);
+  });
+
+  // Audio play button
+  if (hasPlayableAyahs) {
+    const playBtn = div.querySelector('#intro-play');
+    let playing = false;
+    playBtn.addEventListener('click', () => {
+      if (playing) {
+        stopAudio();
+        playBtn.classList.remove('intro-playing');
+        playing = false;
+        return;
+      }
+      playing = true;
+      playBtn.classList.add('intro-playing');
+
+      const playable = ayahs
+        .filter(a => !a.noAudio && parseRef(a.ref))
+        .map(a => {
+          const p = parseRef(a.ref);
+          return { surah: p.surah, ayah: p.ayah, wordCount: a.wordCount };
+        });
+
+      playAyahs(playable, () => {}).then(() => {
+        playing = false;
+        if (playBtn) playBtn.classList.remove('intro-playing');
+      });
+    });
+  }
+
+  div.querySelector('#intro-continue').addEventListener('click', advance);
+}
+
+// ── Context Page ────────────────────────────────────────────
+
+function renderContextPage(container, lesson, lessonId) {
+  const { context } = getIntro(lesson);
+  const advance = () => {
+    state.exerciseIndex = 0;
+    const target = document.getElementById('app');
+    target.innerHTML = '';
+    renderExercise(target, lessonId);
+  };
+
+  const div = document.createElement('div');
+  div.className = 'context-page';
+
+  div.innerHTML = `
+    <button class="intro-close" id="ctx-close">&times;</button>
+    <div class="context-ornament">&#xFDFD;</div>
+    <div class="context-label">${context.label}</div>
+    <div class="context-text">${context.text}</div>
+    ${lesson.newWords.length ? `
+      <div class="context-words-section">
+        <div class="context-words-label">Words you'll learn</div>
+        <div class="context-words-ar">${lesson.newWords.join('  ·  ')}</div>
+      </div>
+    ` : ''}
+    <button class="continue-btn" id="ctx-continue">Begin</button>
+  `;
+
+  container.appendChild(div);
+
+  div.querySelector('#ctx-close').addEventListener('click', () => {
+    router.navigate('lessons', { unitId: state.unitId }, true);
+  });
+
+  div.querySelector('#ctx-continue').addEventListener('click', advance);
+}
+
+// ── Feedback Panel ──────────────────────────────────────────
+
 function showFeedbackPanel(exerciseScreen, correct, detail, onContinue) {
   const panel = document.createElement('div');
   panel.className = `feedback-panel ${correct ? 'correct' : 'incorrect'}`;
@@ -128,6 +257,8 @@ function showFeedbackPanel(exerciseScreen, correct, detail, onContinue) {
 
   panel.querySelector('#feedback-continue').addEventListener('click', onContinue);
 }
+
+// ── Lesson Complete ─────────────────────────────────────────
 
 function renderLessonComplete(container, lesson) {
   state.completeLesson(lesson.id);
@@ -170,6 +301,8 @@ function renderLessonComplete(container, lesson) {
     router.navigate('lessons', { unitId: state.unitId }, true);
   });
 }
+
+// ── Coming Soon ─────────────────────────────────────────────
 
 function renderComingSoon(container, lesson) {
   const div = document.createElement('div');
