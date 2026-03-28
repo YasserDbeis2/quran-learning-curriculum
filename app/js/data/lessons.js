@@ -21,7 +21,7 @@ export const LESSONS = {
   // Vocabulary taught in this unit:
   //   L1: بِسْمِ, ٱللَّهِ
   //   L2: ٱلرَّحْمَـٰنِ, ٱلرَّحِيمِ, رَحْمَة
-  //   L3: ٱلْ, ٱلْحَمْدُ, رَبِّ, ٱلْعَـٰلَمِينَ
+  //   L3: ٱلْ, ٱلْحَمْدُ, لِلَّهِ, رَبِّ, ٱلْعَـٰلَمِينَ
   // ────────────────────────────────────────────────────────────
 
   L1: {
@@ -230,7 +230,8 @@ export const LESSONS = {
     id: 'L3', unitId: 'unit-1', number: 3,
     name: '"The" in Arabic', type: 'grammar', typeLabel: 'Grammar Unlock',
     // FIXED: Now formally introduces ٱلْحَمْدُ, رَبِّ, ٱلْعَـٰلَمِينَ alongside ٱلْ
-    newWords: ['ٱلْ', 'ٱلْحَمْدُ', 'رَبِّ', 'ٱلْعَـٰلَمِينَ'],
+    // FIXED: Added لِلَّهِ — used in tap-to-translate and ayah-assembly for 1:2
+    newWords: ['ٱلْ', 'ٱلْحَمْدُ', 'لِلَّهِ', 'رَبِّ', 'ٱلْعَـٰلَمِينَ'],
     exercises: [
       {
         // Introduce the new ayah — spotlight the first new word
@@ -1084,7 +1085,7 @@ export const LESSONS = {
   // Vocabulary taught in this unit:
   //   L46: لَا, مَا
   //   L47: لَنْ  (لَمْ already taught in Unit 8)
-  //   L48: لَيْسَ, غَيْرِ
+  //   L48: لَيْسَ, غَيْرِ, شَيْءٌ
   //   L49: نَعْبُدُ, أَعْبُدُ, تَعْبُدُونَ, عَبْد
   //   L50: (mastery — no new words)
   // ────────────────────────────────────────────────────────────
@@ -1242,7 +1243,8 @@ export const LESSONS = {
   L48: {
     id: 'L48', unitId: 'unit-13', number: 48,
     name: 'لَيْسَ and غَيْرِ', type: 'grammar', typeLabel: 'Grammar Unlock',
-    newWords: ['لَيْسَ', 'غَيْرِ'],
+    // FIXED: Added شَيْءٌ — used in tap-to-translate for 42:11 but never taught
+    newWords: ['لَيْسَ', 'غَيْرِ', 'شَيْءٌ'],
     exercises: [
       {
         type: 'word-spotlight',
@@ -1309,6 +1311,19 @@ export const LESSONS = {
         ],
       },
       {
+        // FIXED: Added word-spotlight for شَيْءٌ — used in exercises but never taught
+        type: 'word-spotlight',
+        ayah: 'لَيْسَ كَمِثْلِهِ شَيْءٌ',
+        ayahRef: '42:11',
+        words: ['لَيْسَ', 'كَمِثْلِهِ', 'شَيْءٌ'],
+        highlightIndex: 2,
+        question: 'What does شَيْءٌ mean?',
+        options: ['A thing / anything', 'A person', 'A time', 'A place'],
+        answer: 'A thing / anything',
+        hint: '"There is not like Him ___"',
+        detail: 'شَيْءٌ — "a thing, anything." One of the most common nouns in the Quran (~280 times).',
+      },
+      {
         type: 'fill-the-gap',
         ayahRef: '42:11',
         ayah: ['______', 'كَمِثْلِهِ', 'شَيْءٌ'],
@@ -1317,10 +1332,11 @@ export const LESSONS = {
         answer: 'لَيْسَ',
       },
       {
+        // FIXED: Simplified — كَمِثْلِهِ is untaught but the overall meaning is clear with لَيْسَ and شَيْءٌ taught
         type: 'tap-to-translate',
         ayah: 'لَيْسَ كَمِثْلِهِ شَيْءٌ',
         ayahRef: '42:11',
-        translationWords: ['There is nothing', 'like', 'Him'],
+        translationWords: ['There is not', 'like Him', 'anything'],
       },
     ],
   },
@@ -2322,7 +2338,7 @@ export const LESSONS = {
   // UNIT 3 — You Alone (3 lessons)
   //
   // Vocabulary taught in this unit:
-  //   L8: إِيَّاكَ, نَعْبُدُ, نَسْتَعِينُ
+  //   L8: إِيَّاكَ, نَعْبُدُ, نَسْتَعِينُ, وَ
   //   L9: ٱهْدِنَا, ٱلصِّرَٰطَ, ٱلْمُسْتَقِيمَ
   //   L10: أَنْعَمْتَ, عَلَيْهِمْ
   // ────────────────────────────────────────────────────────────
@@ -2330,7 +2346,8 @@ export const LESSONS = {
   L8: {
     id: 'L8', unitId: 'unit-3', number: 8,
     name: 'You Alone We Worship', type: 'grammar', typeLabel: 'Grammar',
-    newWords: ['إِيَّاكَ', 'نَعْبُدُ', 'نَسْتَعِينُ'],
+    // FIXED: Added وَ — used in وَإِيَّاكَ in tap-to-translate and ayah-assembly
+    newWords: ['إِيَّاكَ', 'نَعْبُدُ', 'نَسْتَعِينُ', 'وَ'],
     exercises: [
       {
         type: 'word-spotlight',
@@ -2578,16 +2595,18 @@ export const LESSONS = {
         answer: 'عَلَيْهِمْ',
       },
       {
+        // FIXED: Simplified to only use taught words — صِرَٰطَ and ٱلَّذِينَ are not taught until L12
         type: 'tap-to-translate',
-        ayah: 'صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ',
+        ayah: 'أَنْعَمْتَ عَلَيْهِمْ',
         ayahRef: '1:7',
-        translationWords: ['The path of', 'those', 'You have blessed', 'upon them'],
+        translationWords: ['You have blessed', 'upon them'],
       },
       {
+        // FIXED: Assembly restricted to taught words only
         type: 'ayah-assembly',
         ayahRef: '1:7',
-        translation: 'The path of those You have blessed',
-        words: ['صِرَٰطَ', 'ٱلَّذِينَ', 'أَنْعَمْتَ', 'عَلَيْهِمْ'],
+        translation: '"You have blessed upon them" — put the words in order',
+        words: ['أَنْعَمْتَ', 'عَلَيْهِمْ'],
       },
     ],
   },
@@ -3051,10 +3070,12 @@ export const LESSONS = {
         answer: 'عَن (about)',
       },
       {
+        // FIXED: Original used 96:2 with 3 untaught words (خَلَقَ, ٱلْإِنسَـٰنَ, عَلَقٍ).
+        // Replaced with an exercise using only taught particles in a known ayah context.
         type: 'tap-to-translate',
-        ayah: 'خَلَقَ ٱلْإِنسَـٰنَ مِنْ عَلَقٍ',
-        ayahRef: '96:2',
-        translationWords: ['He created', 'mankind', 'from', 'a clot'],
+        ayah: 'أَنْعَمْتَ عَلَيْهِمْ',
+        ayahRef: '1:7',
+        translationWords: ['You blessed', 'upon them'],
       },
     ],
   },
@@ -3661,12 +3682,8 @@ export const LESSONS = {
         ayahRef: 'Takbir',
         translationWords: ['Allah', 'is the Greatest'],
       },
-      {
-        type: 'tap-to-translate',
-        ayah: 'سُبْحَانَ رَبِّيَ ٱلْعَظِيمِ',
-        ayahRef: 'Ruku',
-        translationWords: ['Glory be to', 'my Lord,', 'the Magnificent'],
-      },
+      // REMOVED: tap-to-translate for سُبْحَانَ رَبِّيَ ٱلْعَظِيمِ — رَبِّيَ and ٱلْعَظِيمِ
+      // are not taught until L23. The full tap-to-translate is properly placed in L23.
     ],
   },
 
@@ -3929,8 +3946,8 @@ export const LESSONS = {
   //
   // Vocabulary taught in this unit:
   //   L31: أَعُوذُ, بِرَبِّ, ٱلْفَلَقِ
-  //   L32: شَرِّ, مَا خَلَقَ
-  //   L33: غَاسِقٍ, ٱلنَّفَّـٰثَـٰتِ, حَاسِدٍ
+  //   L32: شَرِّ, مَا, خَلَقَ
+  //   L33: غَاسِقٍ, إِذَا, ٱلنَّفَّـٰثَـٰتِ, حَاسِدٍ, حَسَدَ
   //   L34: (surah mastery)
   // ────────────────────────────────────────────────────────────
 
@@ -4021,7 +4038,8 @@ export const LESSONS = {
   L32: {
     id: 'L32', unitId: 'unit-9', number: 32,
     name: 'Evil of Creation', type: 'root', typeLabel: 'Root Deep Dive',
-    newWords: ['شَرِّ', 'خَلَقَ'],
+    // FIXED: Added مَا — used in tap-to-translate for 113:2 and not taught until L46
+    newWords: ['شَرِّ', 'مَا', 'خَلَقَ'],
     exercises: [
       {
         type: 'word-spotlight',
@@ -4071,12 +4089,25 @@ export const LESSONS = {
         answer: 'The Creator',
       },
       {
+        // FIXED: Added word-spotlight for مَا — needed before tap-to-translate
+        type: 'word-spotlight',
+        ayah: 'مِن شَرِّ مَا خَلَقَ',
+        ayahRef: '113:2',
+        words: ['مِن', 'شَرِّ', 'مَا', 'خَلَقَ'],
+        highlightIndex: 2,
+        question: 'What does مَا mean here?',
+        options: ['What / that which', 'Not', 'Who', 'From'],
+        answer: 'What / that which',
+        hint: '"From the evil of ___ He created"',
+        detail: 'مَا — "what / that which." Here it means "everything that." مَا خَلَقَ = "what He created."',
+      },
+      {
         type: 'meaning-match',
         pairs: [
           ['شَرِّ', 'Evil of'],
+          ['مَا', 'What / that which'],
           ['خَلَقَ', 'He created'],
           ['أَعُوذُ', 'I seek refuge'],
-          ['بِرَبِّ', 'In the Lord of'],
         ],
       },
       {
@@ -4107,7 +4138,8 @@ export const LESSONS = {
   L33: {
     id: 'L33', unitId: 'unit-9', number: 33,
     name: 'Darkness, Blowers, Enviers', type: 'new-words', typeLabel: 'New Words',
-    newWords: ['غَاسِقٍ', 'ٱلنَّفَّـٰثَـٰتِ', 'حَاسِدٍ'],
+    // FIXED: Added إِذَا and حَسَدَ — both used in tap-to-translate for 113:5 but were never taught
+    newWords: ['غَاسِقٍ', 'إِذَا', 'ٱلنَّفَّـٰثَـٰتِ', 'حَاسِدٍ', 'حَسَدَ'],
     exercises: [
       {
         type: 'word-spotlight',
@@ -4157,12 +4189,38 @@ export const LESSONS = {
         detail: 'حَاسِدٍ — an envier, one who envies. The fourth evil in the surah.',
       },
       {
+        // FIXED: Added word-spotlight for إِذَا — used in tap-to-translate but never taught
+        type: 'word-spotlight',
+        ayah: 'وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ',
+        ayahRef: '113:3',
+        words: ['وَمِن', 'شَرِّ', 'غَاسِقٍ', 'إِذَا', 'وَقَبَ'],
+        highlightIndex: 3,
+        question: 'What does إِذَا mean?',
+        options: ['When', 'Not', 'From', 'Indeed'],
+        answer: 'When',
+        hint: '"And from the evil of darkness ___ it descends"',
+        detail: 'إِذَا — "when." A very common temporal particle. Appears 360+ times in the Quran.',
+      },
+      {
+        // FIXED: Added word-spotlight for حَسَدَ — verb form of حَاسِدٍ, used in tap-to-translate
+        type: 'word-spotlight',
+        ayah: 'وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ',
+        ayahRef: '113:5',
+        words: ['وَمِن', 'شَرِّ', 'حَاسِدٍ', 'إِذَا', 'حَسَدَ'],
+        highlightIndex: 4,
+        question: 'حَاسِدٍ is "an envier." What does the verb حَسَدَ mean?',
+        options: ['He envied', 'He helped', 'He created', 'He said'],
+        answer: 'He envied',
+        hint: '"And from the evil of an envier when ___"',
+        detail: 'حَسَدَ — "he envied." The verb form of حَاسِدٍ (envier). Same root ح-س-د.',
+      },
+      {
         type: 'meaning-match',
         pairs: [
           ['غَاسِقٍ', 'Darkness'],
-          ['ٱلنَّفَّـٰثَـٰتِ', 'Those who blow'],
+          ['إِذَا', 'When'],
           ['حَاسِدٍ', 'An envier'],
-          ['شَرِّ', 'Evil of'],
+          ['حَسَدَ', 'He envied'],
         ],
       },
       {
@@ -4264,7 +4322,7 @@ export const LESSONS = {
   // Vocabulary taught in this unit:
   //   L35: ٱلنَّاسِ, مَلِكِ, إِلَـٰهِ
   //   L36: ٱلْوَسْوَاسِ, ٱلْخَنَّاسِ
-  //   L37: صُدُورِ, ٱلْجِنَّةِ
+  //   L37: ٱلَّذِى, يُوَسْوِسُ, صُدُورِ, ٱلْجِنَّةِ
   //   L38: (surah mastery)
   // ────────────────────────────────────────────────────────────
 
@@ -4427,8 +4485,35 @@ export const LESSONS = {
   L37: {
     id: 'L37', unitId: 'unit-10', number: 37,
     name: 'In Hearts of Men & Jinn', type: 'new-words', typeLabel: 'New Words',
-    newWords: ['صُدُورِ', 'ٱلْجِنَّةِ'],
+    // FIXED: Added ٱلَّذِى and يُوَسْوِسُ — both used in tap-to-translate/assembly but were never taught
+    newWords: ['ٱلَّذِى', 'يُوَسْوِسُ', 'صُدُورِ', 'ٱلْجِنَّةِ'],
     exercises: [
+      {
+        // FIXED: Added word-spotlight for ٱلَّذِى — singular form of ٱلَّذِينَ, never formally taught
+        type: 'word-spotlight',
+        ayah: 'ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ',
+        ayahRef: '114:5',
+        words: ['ٱلَّذِى', 'يُوَسْوِسُ', 'فِى', 'صُدُورِ', 'ٱلنَّاسِ'],
+        highlightIndex: 0,
+        question: 'You know ٱلَّذِينَ (those who, plural). What does ٱلَّذِى mean?',
+        options: ['The one who (singular)', 'Those who (plural)', 'Not', 'From'],
+        answer: 'The one who (singular)',
+        hint: '"___ whispers in the chests of mankind"',
+        detail: 'ٱلَّذِى — "the one who" (singular). Compare: ٱلَّذِينَ = "those who" (plural).',
+      },
+      {
+        // FIXED: Added word-spotlight for يُوَسْوِسُ — verb form of ٱلْوَسْوَاسِ (taught in L36)
+        type: 'word-spotlight',
+        ayah: 'ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ',
+        ayahRef: '114:5',
+        words: ['ٱلَّذِى', 'يُوَسْوِسُ', 'فِى', 'صُدُورِ', 'ٱلنَّاسِ'],
+        highlightIndex: 1,
+        question: 'You know ٱلْوَسْوَاسِ (the whisperer). What does يُوَسْوِسُ mean?',
+        options: ['He whispers', 'He retreats', 'He creates', 'He hears'],
+        answer: 'He whispers',
+        hint: '"The one who ___ in the chests of mankind"',
+        detail: 'يُوَسْوِسُ — "he whispers." The verb form of ٱلْوَسْوَاسِ (the whisperer). Same root و-س-و-س.',
+      },
       {
         type: 'word-spotlight',
         ayah: 'ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ',
@@ -4900,8 +4985,8 @@ export const LESSONS = {
   //
   // Vocabulary taught in this unit:
   //   L51: خَيْر, شَرّ
-  //   L52: فَمَن, يَعْمَلْ, مِثْقَالَ, ذَرَّةٍ
-  //   L53: يَرَهُ, وَمَن
+  //   L52: فَمَن, يَعْمَلْ, مِثْقَالَ, ذَرَّةٍ, خَيْرًا, يَرَهُ
+  //   L53: وَمَن
   // ────────────────────────────────────────────────────────────
 
   L51: {
@@ -4984,7 +5069,8 @@ export const LESSONS = {
   L52: {
     id: 'L52', unitId: 'unit-14', number: 52,
     name: "An Atom's Weight", type: 'new-words', typeLabel: 'New Words',
-    newWords: ['فَمَن', 'يَعْمَلْ', 'مِثْقَالَ', 'ذَرَّةٍ'],
+    // FIXED: Added خَيْرًا and يَرَهُ — both used in tap-to-translate/assembly but were taught in L53
+    newWords: ['فَمَن', 'يَعْمَلْ', 'مِثْقَالَ', 'ذَرَّةٍ', 'خَيْرًا', 'يَرَهُ'],
     exercises: [
       {
         type: 'word-spotlight',
@@ -5046,12 +5132,38 @@ export const LESSONS = {
         detail: 'ذَرَّةٍ — "an atom / a tiny particle." Nothing escapes Allah\'s account, not even an atom\'s weight.',
       },
       {
+        // FIXED: Added word-spotlight for خَيْرًا — used in tap/assembly but was taught in L53
+        type: 'word-spotlight',
+        ayah: 'فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ',
+        ayahRef: '99:7',
+        words: ['فَمَن', 'يَعْمَلْ', 'مِثْقَالَ', 'ذَرَّةٍ', 'خَيْرًا', 'يَرَهُ'],
+        highlightIndex: 4,
+        question: 'What does خَيْرًا mean?',
+        options: ['Good', 'Evil', 'Great', 'Small'],
+        answer: 'Good',
+        hint: '"So whoever does an atom\'s weight of ___ will see it"',
+        detail: 'خَيْرًا — "good." The opposite of شَرّ (evil). Even a tiny bit of good is recorded.',
+      },
+      {
+        // FIXED: Added word-spotlight for يَرَهُ — used in tap/assembly but was taught in L53
+        type: 'word-spotlight',
+        ayah: 'فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ',
+        ayahRef: '99:7',
+        words: ['فَمَن', 'يَعْمَلْ', 'مِثْقَالَ', 'ذَرَّةٍ', 'خَيْرًا', 'يَرَهُ'],
+        highlightIndex: 5,
+        question: 'What does يَرَهُ mean?',
+        options: ['He will see it', 'He will hear it', 'He will know it', 'He will say it'],
+        answer: 'He will see it',
+        hint: '"So whoever does an atom\'s weight of good ___"',
+        detail: 'يَرَهُ — "he will see it." From root ر-أ-ي (to see). The هُ suffix means "it."',
+      },
+      {
         type: 'meaning-match',
         pairs: [
           ['فَمَن', 'so whoever'],
           ['يَعْمَلْ', 'does / works'],
-          ['مِثْقَالَ', 'weight of'],
-          ['ذَرَّةٍ', 'an atom'],
+          ['خَيْرًا', 'good'],
+          ['يَرَهُ', 'he will see it'],
         ],
       },
       {
@@ -5164,8 +5276,8 @@ export const LESSONS = {
   // Vocabulary taught in this unit:
   //   L59: ٱقْرَأْ, خَلَقَ
   //   L60: عَلَقٍ
-  //   L61: ٱلْقَلَمِ, عَلَّمَ
-  //   L62: أَرْض, سَمَاء, مَاء
+  //   L61: ٱلْقَلَمِ, عَلَّمَ, يَعْلَمْ
+  //   L62: أَرْض, سَمَاء, مَاء, أَنزَلَ
   // ────────────────────────────────────────────────────────────
 
   L59: {
@@ -5330,7 +5442,8 @@ export const LESSONS = {
   L61: {
     id: 'L61', unitId: 'unit-16', number: 61,
     name: 'Taught by the Pen', type: 'root', typeLabel: 'Root Deep Dive',
-    newWords: ['ٱلْقَلَمِ', 'عَلَّمَ'],
+    // FIXED: Added يَعْلَمْ — used in tap-to-translate for 96:5 but was never taught
+    newWords: ['ٱلْقَلَمِ', 'عَلَّمَ', 'يَعْلَمْ'],
     exercises: [
       {
         type: 'word-spotlight',
@@ -5381,12 +5494,24 @@ export const LESSONS = {
         detail: 'عِلْم — "knowledge." The noun form. عَلَّمَ (He taught) → عِلْم (knowledge). Knowledge is central to the first revelation!',
       },
       {
+        type: 'word-spotlight',
+        ayah: 'عَلَّمَ ٱلْإِنسَـٰنَ مَا لَمْ يَعْلَمْ',
+        ayahRef: '96:5',
+        words: ['عَلَّمَ', 'ٱلْإِنسَـٰنَ', 'مَا', 'لَمْ', 'يَعْلَمْ'],
+        highlightIndex: 4,
+        question: 'What does يَعْلَمْ mean?',
+        options: ['he knows', 'he teaches', 'he reads', 'he creates'],
+        answer: 'he knows',
+        hint: '"He taught mankind what he did not ___"',
+        detail: 'يَعْلَمْ — "he knows." Same root ع-ل-م as عَلَّمَ (He taught). لَمْ يَعْلَمْ = "he did not know."',
+      },
+      {
         type: 'meaning-match',
         pairs: [
           ['عَلَّمَ', 'He taught'],
+          ['يَعْلَمْ', 'he knows'],
           ['بِٱلْقَلَمِ', 'by the pen'],
           ['خَلَقَ', 'He created'],
-          ['ٱقْرَأْ', 'Read! / Recite!'],
         ],
       },
       {
@@ -5421,7 +5546,8 @@ export const LESSONS = {
   L62: {
     id: 'L62', unitId: 'unit-16', number: 62,
     name: 'Earth, Sky, Water', type: 'new-words', typeLabel: 'New Words',
-    newWords: ['أَرْض', 'سَمَاء', 'مَاء'],
+    // FIXED: Added أَنزَلَ — used in tap-to-translate for 2:22 but was never taught
+    newWords: ['أَرْض', 'سَمَاء', 'مَاء', 'أَنزَلَ'],
     exercises: [
       {
         type: 'word-spotlight',
@@ -5484,12 +5610,24 @@ export const LESSONS = {
         detail: 'أَرْضِين — "lands/earths." The plural form. A hadith mentions "seven earths" (سَبْع أَرْضِين).',
       },
       {
+        type: 'word-spotlight',
+        ayah: 'وَأَنزَلَ مِنَ ٱلسَّمَاءِ مَاءً',
+        ayahRef: '2:22',
+        words: ['وَأَنزَلَ', 'مِنَ', 'ٱلسَّمَاءِ', 'مَاءً'],
+        highlightIndex: 0,
+        question: 'What does وَأَنزَلَ mean?',
+        options: ['and He sent down', 'and He created', 'and He raised', 'and He gathered'],
+        answer: 'and He sent down',
+        hint: '"___ from the sky, water..."',
+        detail: 'وَأَنزَلَ — "and He sent down." وَ (and) + أَنزَلَ (He sent down). Used for rain, revelation, and blessings from above.',
+      },
+      {
         type: 'meaning-match',
         pairs: [
           ['أَرْض', 'earth / land'],
           ['سَمَاء', 'sky / heaven'],
           ['مَاء', 'water'],
-          ['خَلَقَ', 'He created'],
+          ['أَنزَلَ', 'He sent down'],
         ],
       },
       {
